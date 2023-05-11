@@ -1,0 +1,20 @@
+{
+    "name": "qjp",
+    "description": "Quantum Jump Pinball",
+    
+    "copyright": "Copyright © 2023  Elias Batek (0xEAB)",
+    "license": "BSL-1.0",
+
+    "authors": [
+        "Elias Batek (0xEAB)"
+    ],
+
+    "targetPath": "bin",
+    "targetType": "executable",
+
+    "sourceFiles": ["libraylib.a"],
+
+    "dependencies": {
+        "raylib-d": "4.5.1"
+    }
+}

@@ -1,0 +1,7 @@
+# dub
+.dub
+dub.selections.json
+
+# binary
+bin/
+/libraylib.a
