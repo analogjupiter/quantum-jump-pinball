@@ -74,7 +74,7 @@ struct GameConstants
         pinballAura2    = Color(0x00, 0x99, 0xFF, 0x00),
 
         flipper         = Color(0xCC, 0x33, 0x44, opaque),
-        tower           = Color(0x44, 0x55, 0x66, opaque),
+        tower           = Color(0x99, 0xAA, 0xCC, opaque),
         outline         = Color(0x00, 0x00, 0x11, opaque),
         // dfmt on
     }
@@ -120,7 +120,7 @@ void runPinball(ref GameState state)
     Camera2D camera = Camera2D(cast(Vector2) CTs.cameraOffset, cast(Vector2) CTs.center, 0, 0.95);
     state.pinball.position = Vector2(200, 200);
     state.pinball.active = true;
-    state.quantumLevel = 3;
+    state.quantumLevel = 1;
 
     while (!WindowShouldClose())
     {
