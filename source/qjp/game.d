@@ -140,24 +140,23 @@ void launchNewPinball(ref GameState state, const int velocityPct)
 in (velocityPct >= 0)
 in (velocityPct <= 100)
 {
-    state.pinball.active = true;
-    auto movement = Vector2(Math.cos(state.positionFlippers), Math.sin(state.positionFlippers));
     spawnPinball(state);
+    state.pinball.active = true;
 }
 
 void moveBalls(ref GameState state, const double delta)
 {
-    static void moveBall(ref Ball ball, const double delta)
+    static void moveBall(ref Ball ball, const int quantumLevel, const double delta)
     {
-        float distance = ball.velocity * delta;
+        float distance = ball.velocity * quantumLevel * delta;
         ball.position += ball.movement * distance;
     }
 
     if (state.pinball.active)
-        moveBall(state.pinball.ball, delta);
+        moveBall(state.pinball.ball, state.quantumLevel, delta);
 
     foreach (ball; state.balls)
-        moveBall(ball, delta);
+        moveBall(ball, state.quantumLevel, delta);
 }
 
 Vector2 calcOuterCirclePos(const ref GameState state, float angle)
@@ -172,8 +171,9 @@ Vector2 calcOuterCirclePos(const ref GameState state, float angle)
 
 void spawnPinball(ref GameState state)
 {
-    immutable float fieldRadius = state.quantumLevel * CTs.radiusQuantum;
     immutable float angleRad = (state.positionFlippers + 90).toRadiant();
+    immutable float fieldRadius = state.quantumLevel * CTs.radiusQuantum;
+
     immutable pos = Vector2(
         Math.cos(angleRad),
         Math.sin(angleRad),
