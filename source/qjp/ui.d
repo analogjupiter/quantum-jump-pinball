@@ -66,13 +66,19 @@ void drawManual()
 
 void drawHUD(const ref GameState state)
 {
+    import std.format : sformat;
+
+    char[128] buffer;
+
+    sformat(buffer, "Spring: %d%%\0", cast(int) state.positionLauncherSpring);
     DrawText(
-        ("Spring: " ~ (cast(int) state.positionLauncherSpring)
-            .to!string ~ "%\0").ptr,
+        buffer.ptr,
         10, 400, 16, CTs.Colors.flipper
     );
+
+    sformat(buffer, "Now: %.0fs\0", GetTime());
     DrawText(
-        ("Now: " ~ (cast(int) GetTime()).to!string ~ "s\0").ptr,
+        buffer.ptr,
         10, 420, 16, CTs.Colors.flipper
     );
 }
