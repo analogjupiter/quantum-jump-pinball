@@ -202,11 +202,4 @@ void drawFlippers(const ref GameState state)
     drawFlipper!false(state);
     drawTower!true();
     drawTower!false();
-
-    DrawTriangle(
-        Vector2(200, -500),
-        Vector2(200, -200),
-        Vector2(200, -100),
-        Colors.GOLD,
-    );
 }
