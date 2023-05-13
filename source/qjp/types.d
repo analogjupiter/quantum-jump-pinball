@@ -21,3 +21,52 @@ struct Vector2i
         );
     }
 }
+
+struct List(T)
+{
+    private
+    {
+        T[] _data;
+        size_t _length;
+    }
+
+    size_t capacity() const @safe pure nothrow @nogc
+    {
+        return _data.length;
+    }
+
+    size_t length() const @safe pure nothrow @nogc
+    {
+        return _length;
+    }
+
+    auto opOpAssign(string op : "~")(T value)
+    {
+        this.reserveIfNecessary();
+        _data[_length] = value;
+        ++_length;
+        return this;
+    }
+
+    int opApply(scope int delegate(ref T) dg)
+    {
+        int result = 0;
+
+        foreach (item; _data)
+        {
+            result = dg(item);
+            if (result)
+                break;
+        }
+
+        return result;
+    }
+
+    private void reserveIfNecessary()
+    {
+        if (capacity > _length)
+            return;
+
+        _data.length += (_data.length / 2);
+    }
+}
