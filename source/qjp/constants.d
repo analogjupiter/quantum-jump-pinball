@@ -2,6 +2,9 @@ module qjp.constants;
 
 import qjp.types;
 import raylib;
+import Math = std.math : PI;
+
+enum TAU = 2 * Math.PI;
 
 struct GameConstants
 {
@@ -10,7 +13,7 @@ struct GameConstants
         configFlags = ConfigFlags.FLAG_MSAA_4X_HINT,
 
         //screenResolution = Vector2i(1440, 1080),
-        screenResolution = Vector2i(960, 720),
+        screenResolution = Vector2i(1024, 720),
         cameraOffset = screenResolution / 2,
         center = Vector2i(0, 0),
 
@@ -25,6 +28,8 @@ struct GameConstants
         wobbleQuantum = 60.0f,
         pinballVelocity = screenResolution.y / 0.75f,
         launcherSpringVelocity = 50.0f,
+        reboundAngleMin = 40.toRadiant(),
+        reboundAngleMax = 50.toRadiant(),
     }
 
     enum

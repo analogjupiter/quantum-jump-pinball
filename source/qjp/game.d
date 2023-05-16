@@ -1,7 +1,9 @@
 module qjp.game;
 
+import qjp.collision;
 import qjp.constants;
 import qjp.gametypes;
+import qjp.random;
 import qjp.types;
 import qjp.ui;
 
@@ -131,14 +133,12 @@ void handlePinballLauncher(ref GameState state, const double delta, const ref In
             return;
         }
 
-        launchNewPinball(state, cast(int) state.positionLauncherSpring);
+        launchNewPinball(state);
         state.positionLauncherSpring = 0;
     }
 }
 
-void launchNewPinball(ref GameState state, const int velocityPct)
-in (velocityPct >= 0)
-in (velocityPct <= 100)
+void launchNewPinball(ref GameState state)
 {
     spawnPinball(state);
     state.pinball.active = true;
@@ -146,17 +146,39 @@ in (velocityPct <= 100)
 
 void moveBalls(ref GameState state, const double delta)
 {
-    static void moveBall(ref Ball ball, const int quantumLevel, const double delta)
+    static void moveBall(bool isMainPinball)(ref Ball ball, const ref GameState state, const double delta)
     {
-        float distance = ball.velocity * quantumLevel * delta;
-        ball.position += ball.movement * distance;
+        float distance = ball.velocity * state.quantumLevel * delta;
+        Vector2 nextPos = ball.position + (ball.movement * distance);
+
+        static if (isMainPinball)
+        {
+        }
+
+        if (checkCollisionOuterBounds(state, nextPos))
+        {
+            ball.movement *= -1;
+            immutable angleRad = Math.atan2(ball.movement.y, ball.movement.x);
+            
+            immutable float turnRad = rand(CTs.reboundAngleMin, CTs.reboundAngleMax);
+            immutable angleRadTarget = angleRad + turnRad;
+            
+            ball.movement = Vector2(
+                Math.cos(angleRadTarget),
+                Math.sin(angleRadTarget),
+            );
+
+            return;
+        }
+
+        ball.position = nextPos;
     }
 
     if (state.pinball.active)
-        moveBall(state.pinball.ball, state.quantumLevel, delta);
+        moveBall!true(state.pinball.ball, state, delta);
 
     foreach (ball; state.balls)
-        moveBall(ball, state.quantumLevel, delta);
+        moveBall!false(ball, state, delta);
 }
 
 Vector2 calcOuterCirclePos(const ref GameState state, float angle)
@@ -172,7 +194,7 @@ Vector2 calcOuterCirclePos(const ref GameState state, float angle)
 void spawnPinball(ref GameState state)
 {
     immutable float angleRad = (state.positionFlippers + 90).toRadiant();
-    immutable float fieldRadius = state.quantumLevel * CTs.radiusQuantum;
+    immutable float fieldRadius = calcFieldRadius(state);
 
     immutable pos = Vector2(
         Math.cos(angleRad),
@@ -184,14 +206,4 @@ void spawnPinball(ref GameState state)
         pos * fieldRadius,
         pos * -1,
     );
-}
-
-float toRadiant(const float degree)
-{
-    return degree * Math.PI / 180;
-}
-
-float toDegree(const float radiant)
-{
-    return radiant * 180 / Math.PI;
 }

@@ -1,11 +1,36 @@
 module qjp.types;
 
 import raylib;
+import Math = std.math;
+
+public import raylib : Vector2;
+
+float toRadiant(const float degree)
+{
+    return degree * Math.PI / 180;
+}
+
+float toDegree(const float radiant)
+{
+    return radiant * 180 / Math.PI;
+}
 
 struct Vector2i
 {
     int x;
     int y;
+
+    this(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+    this(Vector2 v)
+    {
+        this.x = cast(int) v.x;
+        this.y = cast(int) v.y;
+    }
 
     T opCast(T : Vector2)() const @safe pure nothrow @nogc
     {

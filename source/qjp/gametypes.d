@@ -49,3 +49,8 @@ struct Pinball
     bool active = false;
     Ball ball;
 }
+
+float calcFieldRadius(const ref GameState state)
+{
+    return state.quantumLevel * CTs.radiusQuantum;
+}
