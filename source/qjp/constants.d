@@ -35,6 +35,7 @@ struct GameConstants
         reboundAngleMax = 50.toRadiant(),
         wallRotationVelocity = 45.0f,
         probabilityElectron = 15,
+        maxElectrons = 3,
     }
 
     enum

@@ -229,6 +229,9 @@ void spawnPinball(ref GameState state)
 
 void maybeSpawnElectron(ref GameState state)
 {
+    if (state.balls.length >= CTs.maxElectrons)
+        return;
+
     immutable int r = rand(0, 100);
     if (r < CTs.probabilityElectron)
         spawnElectron(state);
