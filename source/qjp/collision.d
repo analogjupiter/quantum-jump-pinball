@@ -121,7 +121,7 @@ bool checkCollisionFlippers(const ref GameState state, const Vector2 pos)
         static if (left)
             return CheckCollisionPointTriangle(pos, tipPos, mount2, mount1);
         else
-            return CheckCollisionPointTriangle(pos, tipPos, mount1, mount2,);
+            return CheckCollisionPointTriangle(pos, tipPos, mount1, mount2);
     }
 
     return checkFlipper!true(state.positionFlipperL, posTranslated)

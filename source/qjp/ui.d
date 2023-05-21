@@ -7,6 +7,7 @@ import raylib;
 
 import std.conv : to;
 import Math = std.math;
+import qjp.obstacles;
 
 ///
 void drawFrame(const ref GameState state, ref Camera2D camera)
@@ -18,29 +19,36 @@ void drawFrame(const ref GameState state, ref Camera2D camera)
         ClearBackground(CTs.Colors.background);
 
         {
-            {
-                Camera2D cameraSphere = camera;
-                cameraSphere.rotation = state.quantumWobbleOffset;
+            Camera2D cameraSphere = camera;
+            cameraSphere.rotation = state.quantumWobbleOffset;
 
+            Camera2D cameraFlippers = camera;
+            cameraFlippers.rotation = state.positionFlippers;
+            cameraFlippers.zoom = 0.95;
+
+            {
                 BeginMode2D(cameraSphere);
                 drawSphere(state);
                 EndMode2D();
             }
 
             {
-                Camera2D cameraFlippers = camera;
-                cameraFlippers.rotation = state.positionFlippers;
-                cameraFlippers.zoom = 0.95;
+                BeginMode2D(camera);
+                drawObstacles(state);
+                EndMode2D();
+            }
 
+            {
                 BeginMode2D(cameraFlippers);
                 drawFlippers(state);
                 EndMode2D();
             }
 
-            BeginMode2D(camera);
-            drawPinball(state);
-            EndMode2D();
-
+            {
+                BeginMode2D(camera);
+                drawPinball(state);
+                EndMode2D();
+            }
         }
 
         drawManual();
@@ -208,4 +216,44 @@ void drawFlippers(const ref GameState state)
     drawFlipper!false(state);
     drawTower!true();
     drawTower!false();
+}
+
+void drawObstacles(const ref GameState state)
+{
+    static void drawQuantumObstacles(const int quantumLevel, const float angleWalls, const float zoom)
+    {
+        immutable float radiusWall = CTs.wallRadius * zoom;
+
+        getObstacles(quantumLevel, delegate(Obstacle obst) {
+            final switch (obst.type) with (Obstacle.Type)
+            {
+            case defect:
+                assert(false, "Defect obstacle");
+            case wall:
+                DrawCircleSector(
+                    Vector2(obst.position.x, obst.position.y),
+                    radiusWall,
+                    angleWalls - 15,
+                    angleWalls + 300,
+                    16,
+                    CTs.Colors.obstacleWall
+                );
+                DrawCircleLines(
+                    cast(int) obst.position.x, cast(int) obst.position.y,
+                    radiusWall,
+                    CTs.Colors.obstacleBorder
+                );
+            }
+        });
+    }
+
+    foreach (levelMinus1; 0 .. state.quantumLevel)
+    {
+        immutable qLvl = levelMinus1 + 1;
+        drawQuantumObstacles(
+            qLvl,
+            state.positionWalls,
+            (float(qLvl) / float(state.quantumLevel)),
+        );
+    }
 }

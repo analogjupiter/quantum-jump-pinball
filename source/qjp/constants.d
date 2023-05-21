@@ -32,6 +32,7 @@ struct GameConstants
         launcherSpringVelocity = 50.0f,
         reboundAngleMin = 40.toRadiant(),
         reboundAngleMax = 50.toRadiant(),
+        wallRotationVelocity = 45.0f,
     }
 
     enum
@@ -55,6 +56,8 @@ struct GameConstants
         towerOffset = screenResolution.y / 8,
         towerRoofHeight = towerWidth * SQRT_3_2,
         towerHeightTotal = CTs.towerHeight + towerRoofHeight,
+
+        wallRadius = screenResolution.y / 20,
     }
 
     enum ubyte opaque = 0xFF;
@@ -76,6 +79,9 @@ struct GameConstants
         flipper         = Color(0xCC, 0x33, 0x44, opaque),
         tower           = Color(0x99, 0xAA, 0xCC, opaque),
         outline         = Color(0x00, 0x00, 0x11, opaque),
+
+        obstacleBorder  = Color(0x11, 0x11, 0x11, opaque),
+        obstacleWall    = Color(0xAA, 0x77, 0x77, opaque),
         // dfmt on
     }
 }

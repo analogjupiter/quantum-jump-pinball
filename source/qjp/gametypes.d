@@ -20,6 +20,8 @@ struct GameState
 
     /// %
     float positionLauncherSpring = 0;
+
+    float positionWalls = 0;
 }
 
 struct Inputs

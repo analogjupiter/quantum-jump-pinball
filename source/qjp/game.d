@@ -32,7 +32,6 @@ void runPinball(ref GameState state)
     rlSetLineWidth(CTs.lineWidth);
 
     Camera2D camera = Camera2D(cast(Vector2) CTs.cameraOffset, cast(Vector2) CTs.center, 0, 0.95);
-    state.quantumLevel = 1;
 
     while (!WindowShouldClose())
     {
@@ -48,7 +47,8 @@ void tick(ref GameState state)
     scope (exit)
         state.previousTickAt = now;
 
-    state.quantumWobbleOffset += delta * CTs.wobbleQuantum;
+    state.quantumWobbleOffset = clampAngle(state.quantumWobbleOffset + delta * CTs.wobbleQuantum);
+    state.positionWalls = clampAngle(state.positionWalls - delta * CTs.wallRotationVelocity);
 
     Inputs inputs = queryInput();
 
@@ -175,8 +175,9 @@ void moveBalls(ref GameState state, const double delta)
         if (checkCollisionOuterBounds(state, nextPos))
             return reboundBall!true(ball);
 
-        if (checkCollisionTowers(state, nextPos))
-            return reboundBall!false(ball);
+        /*static if (isMainPinball)
+            if (checkCollisionTowers(state, nextPos))
+                return reboundBall!false(ball);*/
 
         static if (isMainPinball)
             if (checkCollisionFlippers(state, nextPos))
