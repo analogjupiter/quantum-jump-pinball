@@ -143,7 +143,7 @@ void drawFlippers(const ref GameState state)
         enum ceiling = floor - CTs.towerHeight;
 
         enum centerX = wallLeftX + (CTs.towerWidth / 2);
-        enum rooftopY = ceiling - cast(int) Math.sqrt(float(Math.pow(CTs.towerWidth, 2) - Math.pow((CTs.towerWidth / 2), 2)));
+        enum rooftopY = ceiling - cast(int) CTs.towerRoofHeight;
 
         enum crest = Vector2(centerX, rooftopY);
         enum eavesL = Vector2(wallLeftX, ceiling);

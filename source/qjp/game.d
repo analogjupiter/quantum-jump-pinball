@@ -58,9 +58,11 @@ void tick(ref GameState state)
         break;
     case left:
         state.positionFlippers += (delta * CTs.flipperMovementVelocity);
+        state.positionFlippers = clampAngle(state.positionFlippers);
         break;
     case right:
         state.positionFlippers -= (delta * CTs.flipperMovementVelocity);
+        state.positionFlippers = clampAngle(state.positionFlippers);
         break;
     }
 
@@ -151,25 +153,34 @@ void moveBalls(ref GameState state, const double delta)
         float distance = ball.velocity * state.quantumLevel * delta;
         Vector2 nextPos = ball.position + (ball.movement * distance);
 
-        static if (isMainPinball)
+        static void reboundBall(bool driftAngle = false)(ref Ball ball)
         {
+            ball.movement *= -1;
+
+            static if (driftAngle)
+            {
+                immutable angleRad = Math.atan2(ball.movement.y, ball.movement.x);
+
+                //immutable float turnRad = 45.toRadiant;
+                immutable float turnRad = rand(CTs.reboundAngleMin, CTs.reboundAngleMax);
+                immutable angleRadTarget = angleRad + turnRad;
+
+                ball.movement = Vector2(
+                    Math.cos(angleRadTarget),
+                    Math.sin(angleRadTarget),
+                );
+            }
         }
 
         if (checkCollisionOuterBounds(state, nextPos))
-        {
-            ball.movement *= -1;
-            immutable angleRad = Math.atan2(ball.movement.y, ball.movement.x);
-            
-            immutable float turnRad = rand(CTs.reboundAngleMin, CTs.reboundAngleMax);
-            immutable angleRadTarget = angleRad + turnRad;
-            
-            ball.movement = Vector2(
-                Math.cos(angleRadTarget),
-                Math.sin(angleRadTarget),
-            );
+            return reboundBall!true(ball);
 
-            return;
-        }
+        if (checkCollisionTowers(state, nextPos))
+            return reboundBall!false(ball);
+
+        static if (isMainPinball)
+            if (checkCollisionFlippers(state, nextPos))
+                return reboundBall!false(ball);
 
         ball.position = nextPos;
     }

@@ -5,6 +5,8 @@ import raylib;
 import Math = std.math : PI;
 
 enum TAU = 2 * Math.PI;
+enum float SQRT_3 = Math.sqrt(3f);
+enum float SQRT_3_2 = SQRT_3 / 2;
 
 struct GameConstants
 {
@@ -51,6 +53,8 @@ struct GameConstants
         towerHeight = screenResolution.y / 8,
         towerWidth = screenResolution.y / 16,
         towerOffset = screenResolution.y / 8,
+        towerRoofHeight = towerWidth * SQRT_3_2,
+        towerHeightTotal = CTs.towerHeight + towerRoofHeight,
     }
 
     enum ubyte opaque = 0xFF;

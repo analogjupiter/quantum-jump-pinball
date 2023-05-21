@@ -15,6 +15,22 @@ float toDegree(const float radiant)
     return radiant * 180 / Math.PI;
 }
 
+float clampAngle(const float angle)
+{
+    if (angle >= 360)
+        return angle % 360;
+
+    if (angle < 0)
+        return (angle % 360 + 360);
+
+    return angle;
+}
+
+F pythagoras(F)(const F a, const F b)
+{
+    return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+}
+
 struct Vector2i
 {
     int x;
