@@ -185,6 +185,8 @@ void moveBalls(ref GameState state, const double delta)
 
         if (checkCollisionObstacles(state, nextPos))
         {
+            static if (isMainPinball)
+                maybeSpawnElectron(state);
             return reboundBall!true(ball);
         }
 
