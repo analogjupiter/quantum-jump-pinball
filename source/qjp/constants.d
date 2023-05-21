@@ -29,10 +29,12 @@ struct GameConstants
         flippersVelocity = 800,
         wobbleQuantum = 60.0f,
         pinballVelocity = screenResolution.y / 0.75f,
+        electronVelocity = pinballVelocity * 0.75f,
         launcherSpringVelocity = 50.0f,
         reboundAngleMin = 40.toRadiant(),
         reboundAngleMax = 50.toRadiant(),
         wallRotationVelocity = 45.0f,
+        probabilityElectron = 15,
     }
 
     enum
@@ -47,6 +49,9 @@ struct GameConstants
         diameterPinball = screenResolution.y / 16,
         radiusPinball = diameterPinball / 2,
         radiusPinballAura = radiusPinball * 1.5,
+
+        radiusElectron = radiusPinball / 2,
+        radiusElectronAura = radiusElectron * 1.5,
 
         flipperLength = screenResolution.y / 9,
         flipperMax = screenResolution.y / 12, // must be < flipperLength
@@ -75,6 +80,10 @@ struct GameConstants
         pinball         = Color(0x00, 0x00, 0x77, opaque),
         pinballAura     = Color(0x00, 0x00, 0x77, opaque),
         pinballAura2    = Color(0x00, 0x99, 0xFF, 0x00),
+
+        electron        = Color(0x00, 0xAA, 0x00, opaque),
+        electronAura    = Color(0x00, 0xAA, 0x00, opaque),
+        electronAura2   = Color(0x00, 0xFF, 0x99, 0x00),
 
         flipper         = Color(0xCC, 0x33, 0x44, opaque),
         tower           = Color(0x99, 0xAA, 0xCC, opaque),

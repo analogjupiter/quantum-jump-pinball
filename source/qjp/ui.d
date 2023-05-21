@@ -46,6 +46,7 @@ void drawFrame(ref GameState state, ref Camera2D camera)
 
             {
                 BeginMode2D(camera);
+                drawElectrons(state);
                 drawPinball(state);
                 EndMode2D();
             }
@@ -86,12 +87,20 @@ void drawHUD(const ref GameState state)
         );
     }
 
+    {
+        sformat(buffer, "Wild Electrons: %d\0", cast(int) state.balls.length);
+        DrawText(
+            buffer.ptr,
+            10, 280, 16, CTs.Colors.manual
+        );
+    }
+
     if (state.positionLauncherSpring > 0)
     {
         sformat(buffer, "Spring: %d%%\0", cast(int) state.positionLauncherSpring);
         DrawText(
             buffer.ptr,
-            10, 280, 16, CTs.Colors.flipper
+            10, 300, 16, CTs.Colors.flipper
         );
     }
 
@@ -144,6 +153,26 @@ void drawPinball(const ref GameState state)
         CTs.Colors.pinballAura,
         CTs.Colors.pinballAura2
     );
+}
+
+void drawElectrons(ref GameState state)
+{
+    foreach (ref Ball ball; state.balls)
+    {
+        immutable radius = CTs.radiusElectron * state.quantumLevel;
+        immutable radiusAura = CTs.radiusElectronAura * state.quantumLevel;
+
+        DrawCircleV(ball.position, radius, CTs.Colors.electron);
+
+        // glowing aura
+        DrawCircleGradient(
+            cast(int) ball.position.x,
+            cast(int) ball.position.y,
+            radiusAura,
+            CTs.Colors.electronAura,
+            CTs.Colors.electronAura2
+        );
+    }
 }
 
 void drawFlippers(const ref GameState state)

@@ -194,7 +194,7 @@ void moveBalls(ref GameState state, const double delta)
     if (state.pinball.active)
         moveBall!true(state.pinball.ball, state, delta);
 
-    foreach (ball; state.balls)
+    foreach (ref ball; state.balls)
         moveBall!false(ball, state, delta);
 }
 
@@ -222,5 +222,21 @@ void spawnPinball(ref GameState state)
         CTs.pinballVelocity * state.positionLauncherSpring / 100,
         pos * fieldRadius,
         pos * -1,
+    );
+}
+
+void maybeSpawnElectron(ref GameState state)
+{
+    immutable int r = rand(0, 100);
+    if (r < CTs.probabilityElectron)
+        spawnElectron(state);
+}
+
+void spawnElectron(ref GameState state)
+{
+    state.balls ~= Ball(
+        CTs.electronVelocity,
+        state.pinball.ball.position,
+        state.pinball.ball.movement * -1,
     );
 }

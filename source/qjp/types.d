@@ -68,7 +68,7 @@ struct List(T)
     private
     {
         T[] _data;
-        size_t _length;
+        size_t _length = 0;
     }
 
     size_t capacity() const @safe pure nothrow @nogc
