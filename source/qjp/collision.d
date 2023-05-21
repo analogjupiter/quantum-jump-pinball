@@ -5,6 +5,7 @@ import qjp.gametypes;
 import qjp.types;
 import raylib;
 import Math = std.math;
+import qjp.obstacles;
 
 struct Collision
 {
@@ -126,4 +127,33 @@ bool checkCollisionFlippers(const ref GameState state, const Vector2 pos)
 
     return checkFlipper!true(state.positionFlipperL, posTranslated)
         || checkFlipper!false(state.positionFlipperR, posTranslated);
+}
+
+bool checkCollisionObstacles(const ref GameState state, const Vector2 pos)
+{
+    static class CollisionException : Exception
+    {
+        public this()
+        {
+            super(null);
+        }
+    }
+
+    foreach (lvlMin1; 0 .. state.quantumLevel)
+        try
+            getObstacles(lvlMin1 + 1, delegate(Obstacle obst) {
+                final switch (obst.type) with (Obstacle.Type)
+                {
+                case defect:
+                    assert(false, "Defect obstacle");
+                case wall:
+                    if (distance(obst.position, pos) < CTs.wallRadius)
+                        throw new CollisionException();
+                    break;
+                }
+            });
+        catch (CollisionException)
+            return true;
+
+    return false;
 }

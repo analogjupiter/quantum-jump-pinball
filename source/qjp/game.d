@@ -148,7 +148,7 @@ void launchNewPinball(ref GameState state)
 
 void moveBalls(ref GameState state, const double delta)
 {
-    static void moveBall(bool isMainPinball)(ref Ball ball, const ref GameState state, const double delta)
+    static void moveBall(bool isMainPinball)(ref Ball ball, ref GameState state, const double delta)
     {
         float distance = ball.velocity * state.quantumLevel * delta;
         Vector2 nextPos = ball.position + (ball.movement * distance);
@@ -182,6 +182,11 @@ void moveBalls(ref GameState state, const double delta)
         static if (isMainPinball)
             if (checkCollisionFlippers(state, nextPos))
                 return reboundBall!false(ball);
+
+        if (checkCollisionObstacles(state, nextPos))
+        {
+            return reboundBall!true(ball);
+        }
 
         ball.position = nextPos;
     }

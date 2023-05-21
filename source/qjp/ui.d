@@ -10,7 +10,7 @@ import Math = std.math;
 import qjp.obstacles;
 
 ///
-void drawFrame(const ref GameState state, ref Camera2D camera)
+void drawFrame(ref GameState state, ref Camera2D camera)
 {
     camera.zoom = 1f / state.quantumLevel * 0.95;
 
@@ -95,7 +95,7 @@ void drawHUD(const ref GameState state)
         );
     }
 
-    version(none)
+    version (none)
     {
         sformat(buffer, "Now: %.0fs\0", GetTime());
         DrawText(
