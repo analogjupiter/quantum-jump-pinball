@@ -93,7 +93,7 @@ struct List(T)
     {
         int result = 0;
 
-        foreach (item; _data)
+        foreach (ref item; _data[0 .. _length])
         {
             result = dg(item);
             if (result)
@@ -108,6 +108,6 @@ struct List(T)
         if (capacity > _length)
             return;
 
-        _data.length += (_data.length / 2);
+        _data.length += (_data.length / 2) + 1;
     }
 }
