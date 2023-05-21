@@ -65,11 +65,11 @@ void drawManual()
     DrawText("ESC ... Exit", 10, 40, 16, CTs.Colors.manual);
     DrawText("A ... Move clockwise", 10, 60, 16, CTs.Colors.manual);
     DrawText("D ... Move counter-clockwise", 10, 80, 16, CTs.Colors.manual);
-    DrawText("J ... Left flipper", 10, 100, 16, CTs.Colors.manual);
-    DrawText("L ... Right flipper", 10, 120, 16, CTs.Colors.manual);
-    DrawText("<- ... Left flipper", 10, 140, 16, CTs.Colors.manual);
-    DrawText("-> ... Right flipper", 10, 160, 16, CTs.Colors.manual);
-    DrawText("S ... Launch pinball", 10, 180, 16, CTs.Colors.manual);
+    DrawText("S ... Launch pinball", 10, 100, 16, CTs.Colors.manual);
+    DrawText("J ... Left flipper", 10, 140, 16, CTs.Colors.manual);
+    DrawText("L ... Right flipper", 10, 160, 16, CTs.Colors.manual);
+    DrawText("<- ... Left flipper", 10, 180, 16, CTs.Colors.manual);
+    DrawText("-> ... Right flipper", 10, 200, 16, CTs.Colors.manual);
 }
 
 void drawHUD(const ref GameState state)
@@ -78,17 +78,31 @@ void drawHUD(const ref GameState state)
 
     char[128] buffer;
 
-    sformat(buffer, "Spring: %d%%\0", cast(int) state.positionLauncherSpring);
-    DrawText(
-        buffer.ptr,
-        10, 400, 16, CTs.Colors.flipper
-    );
+    {
+        sformat(buffer, "Quantum Level: %d\0", cast(int) state.quantumLevel);
+        DrawText(
+            buffer.ptr,
+            10, 260, 16, CTs.Colors.manual
+        );
+    }
 
-    sformat(buffer, "Now: %.0fs\0", GetTime());
-    DrawText(
-        buffer.ptr,
-        10, 420, 16, CTs.Colors.flipper
-    );
+    if (state.positionLauncherSpring > 0)
+    {
+        sformat(buffer, "Spring: %d%%\0", cast(int) state.positionLauncherSpring);
+        DrawText(
+            buffer.ptr,
+            10, 280, 16, CTs.Colors.flipper
+        );
+    }
+
+    version(none)
+    {
+        sformat(buffer, "Now: %.0fs\0", GetTime());
+        DrawText(
+            buffer.ptr,
+            10, 240, 16, CTs.Colors.flipper
+        );
+    }
 }
 
 void drawSphere(const ref GameState state)
