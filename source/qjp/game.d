@@ -49,6 +49,9 @@ void tick(ref GameState state)
 
     state.quantumWobbleOffset = clampAngle(state.quantumWobbleOffset + delta * CTs.wobbleQuantum);
     state.positionWalls = clampAngle(state.positionWalls - delta * CTs.wallRotationVelocity);
+    foreach (ref electron; state.electrons)
+        if (!electron.active)
+            electron.cooldownLeft -= delta;
 
     Inputs inputs = queryInput();
 

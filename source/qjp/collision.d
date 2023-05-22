@@ -162,6 +162,6 @@ void checkCollisionElectrons(ref GameState state, const Vector2 pos, void delega
 {
     immutable float maxDistance = (CTs.radiusPinballAura * state.quantumLevel);
     foreach (idx, const ref Electron electron; state.electrons)
-        if (distance(electron.ball.position, pos) < maxDistance)
+        if ((electron.active) && (distance(electron.ball.position, pos) < maxDistance))
             onCollision(idx, electron);
 }
