@@ -193,8 +193,8 @@ void moveBalls(ref GameState state, const double delta)
 
         static if (isMainPinball)
         {
-            checkCollisionElectrons(state, nextPos, delegate(size_t idx, const ref Ball electron) {
-                state.balls.removeAt(idx);
+            checkCollisionElectrons(state, nextPos, delegate(size_t idx, const ref Electron electron) {
+                state.electrons.removeAt(idx);
                 ++state.quantumLevelSchedule;
             });
         }
@@ -205,8 +205,8 @@ void moveBalls(ref GameState state, const double delta)
     if (state.pinball.active)
         moveBall!true(state.pinball.ball, state, delta);
 
-    foreach (ref ball; state.balls)
-        moveBall!false(ball, state, delta);
+    foreach (ref electron; state.electrons)
+        moveBall!false(electron.ball, state, delta);
 }
 
 Vector2 calcOuterCirclePos(const ref GameState state, float angle)
@@ -238,8 +238,8 @@ void spawnPinball(ref GameState state)
 
 void maybeSpawnElectron(ref GameState state)
 {
-    if (state.balls.length >= state.quantumLevel)
-        if (state.balls.length >= CTs.maxElectrons)
+    if (state.electrons.length >= state.quantumLevel)
+        if (state.electrons.length >= CTs.maxElectrons)
             return;
 
     immutable int r = rand(0, 100);
@@ -249,9 +249,9 @@ void maybeSpawnElectron(ref GameState state)
 
 void spawnElectron(ref GameState state)
 {
-    state.balls ~= Ball(
-        CTs.electronVelocity,
-        state.pinball.ball.position,
-        state.pinball.ball.movement * -1,
-    );
+    state.electrons ~= Electron(Ball(
+            CTs.electronVelocity,
+            state.pinball.ball.position,
+            state.pinball.ball.movement * -1,
+    ));
 }

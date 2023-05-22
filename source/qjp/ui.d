@@ -88,7 +88,7 @@ void drawHUD(const ref GameState state)
     }
 
     {
-        sformat(buffer, "Wild Electrons: %d\0", cast(int) state.balls.length);
+        sformat(buffer, "Wild Electrons: %d\0", cast(int) state.electrons.length);
         DrawText(
             buffer.ptr,
             10, 280, 16, CTs.Colors.manual
@@ -157,17 +157,17 @@ void drawPinball(const ref GameState state)
 
 void drawElectrons(ref GameState state)
 {
-    foreach (ref Ball ball; state.balls)
+    foreach (ref Electron electron; state.electrons)
     {
         immutable radius = CTs.radiusElectron * state.quantumLevel;
         immutable radiusAura = CTs.radiusElectronAura * state.quantumLevel;
 
-        DrawCircleV(ball.position, radius, CTs.Colors.electron);
+        DrawCircleV(electron.ball.position, radius, CTs.Colors.electron);
 
         // glowing aura
         DrawCircleGradient(
-            cast(int) ball.position.x,
-            cast(int) ball.position.y,
+            cast(int) electron.ball.position.x,
+            cast(int) electron.ball.position.y,
             radiusAura,
             CTs.Colors.electronAura,
             CTs.Colors.electronAura2

@@ -13,7 +13,7 @@ struct GameState
     float quantumWobbleOffset = 0;
 
     Pinball pinball = Pinball(false, Ball(CTs.pinballVelocity));
-    List!Ball balls;
+    List!Electron electrons;
 
     float positionFlippers = 0;
     float positionFlipperL = 0;
@@ -51,6 +51,17 @@ struct Pinball
 {
     bool active = false;
     Ball ball;
+}
+
+struct Electron
+{
+    Ball ball;
+    float cooldownLeft = CTs.electronCooldown;
+
+    bool active() inout
+    {
+        return cooldownLeft < 0;
+    }
 }
 
 float calcFieldRadius(const ref GameState state)

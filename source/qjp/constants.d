@@ -36,6 +36,7 @@ struct GameConstants
         wallRotationVelocity = 45.0f,
         probabilityElectron = 15,
         maxElectrons = 6,
+        electronCooldown = 1,
     }
 
     enum
