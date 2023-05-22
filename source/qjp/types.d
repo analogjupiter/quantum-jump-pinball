@@ -103,6 +103,27 @@ struct List(T)
         return result;
     }
 
+    int opApply(scope int delegate(size_t, const ref T) dg)
+    {
+        int result = 0;
+
+        foreach (idx, ref item; _data[0 .. _length])
+        {
+            result = dg(idx, item);
+            if (result)
+                break;
+        }
+
+        return result;
+    }
+
+    void removeAt(size_t idx)
+    {
+        foreach (i, ref val; _data[idx .. (_length - 1)])
+            val = _data[i + 1];
+        --_length;
+    }
+
     private void reserveIfNecessary()
     {
         if (capacity > _length)

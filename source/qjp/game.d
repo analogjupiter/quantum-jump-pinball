@@ -88,6 +88,7 @@ void tick(ref GameState state)
     handlePinballLauncher(state, delta, inputs);
 
     moveBalls(state, delta);
+    state.quantumLevel = state.quantumLevelSchedule;
 }
 
 Inputs queryInput()
@@ -190,6 +191,14 @@ void moveBalls(ref GameState state, const double delta)
             return reboundBall!true(ball);
         }
 
+        static if (isMainPinball)
+        {
+            checkCollisionElectrons(state, nextPos, delegate(size_t idx, const ref Ball electron) {
+                state.balls.removeAt(idx);
+                ++state.quantumLevelSchedule;
+            });
+        }
+
         ball.position = nextPos;
     }
 
@@ -229,8 +238,9 @@ void spawnPinball(ref GameState state)
 
 void maybeSpawnElectron(ref GameState state)
 {
-    if (state.balls.length >= CTs.maxElectrons)
-        return;
+    if (state.balls.length >= state.quantumLevel)
+        if (state.balls.length >= CTs.maxElectrons)
+            return;
 
     immutable int r = rand(0, 100);
     if (r < CTs.probabilityElectron)
