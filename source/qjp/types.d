@@ -119,8 +119,9 @@ struct List(T)
 
     void removeAt(size_t idx)
     {
-        foreach (i, ref val; _data[idx .. (_length - 1)])
-            val = _data[i + 1];
+        if (idx < _length)
+            foreach (i, ref val; _data[idx .. (_length - 1)])
+                val = _data[i + 1];
         --_length;
     }
 
