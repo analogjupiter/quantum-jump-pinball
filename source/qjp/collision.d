@@ -129,7 +129,7 @@ bool checkCollisionFlippers(const ref GameState state, const Vector2 pos)
         || checkFlipper!false(state.positionFlipperR, posTranslated);
 }
 
-bool checkCollisionObstacles(const ref GameState state, const Vector2 pos)
+bool checkCollisionObstacles(bool precise)(const ref GameState state, const Vector2 pos)
 {
     static class CollisionException : Exception
     {
@@ -139,6 +139,11 @@ bool checkCollisionObstacles(const ref GameState state, const Vector2 pos)
         }
     }
 
+    static if (precise)
+        immutable radiusBall = CTs.radiusElectron * state.quantumLevel;
+    else
+        immutable radiusBall = CTs.radiusElectron;
+
     foreach (lvlMin1; 0 .. state.quantumLevel)
         try
             getObstacles(lvlMin1 + 1, delegate(Obstacle obst) {
@@ -147,7 +152,8 @@ bool checkCollisionObstacles(const ref GameState state, const Vector2 pos)
                 case defect:
                     assert(false, "Defect obstacle");
                 case wall:
-                    if (distance(obst.position, pos) < CTs.wallRadius)
+                    immutable distToWall = distance(obst.position, pos);
+                    if ((distToWall < CTs.wallRadius) || (distToWall < radiusBall))
                         throw new CollisionException();
                     break;
                 }
