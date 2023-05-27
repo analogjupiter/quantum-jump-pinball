@@ -108,6 +108,10 @@ void drawHandbook()
     DrawText("6. The flippers are", x, 440, 16, CTs.Colors.tipsNTricks);
     DrawText("    nowhere as useful as", x, 460, 16, CTs.Colors.tipsNTricks);
     DrawText("    they might look.", x, 480, 16, CTs.Colors.tipsNTricks);
+    DrawText("7. Going down to a lower", x, 500, 16, CTs.Colors.tipsNTricks);
+    DrawText("    quantum level will", x, 520, 16, CTs.Colors.tipsNTricks);
+    DrawText("    destroy the electrons", x, 540, 16, CTs.Colors.tipsNTricks);
+    DrawText("    on higher ones.", x, 560, 16, CTs.Colors.tipsNTricks);
 }
 
 void drawHUD(const ref GameState state)
