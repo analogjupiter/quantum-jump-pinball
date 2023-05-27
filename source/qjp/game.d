@@ -109,6 +109,9 @@ void tick(ref GameState state)
     foreach (idx, ref electron; state.electrons)
         if (checkCollisionOuterBounds(state, electron.ball.position))
             state.electrons.removeAt(idx);
+
+    if (state.quantumLevel > state.scoreQuantumLevel)
+        state.scoreQuantumLevel = state.quantumLevel;
 }
 
 Inputs queryInput()

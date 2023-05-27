@@ -9,6 +9,7 @@ struct GameState
     double previousTickAt = 0;
 
     long score = 0;
+    int scoreQuantumLevel = 0;
     int quantumLevel = 2;
     int quantumLevelSchedule = 2;
     float quantumWobbleOffset = 0;

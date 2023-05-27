@@ -367,7 +367,10 @@ void drawGameOver(const ref GameState state)
     char[128] buffer;
 
     {
-        sformat(buffer, "Score: %d\0", state.score);
+        sformat(buffer, "Score: %d (highest quantum level: %d)\0",
+            state.score,
+            state.scoreQuantumLevel
+        );
         DrawText(
             buffer.ptr,
             100, 70, 24, CTs.Colors.manual
