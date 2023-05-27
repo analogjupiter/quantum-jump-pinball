@@ -211,9 +211,8 @@ void moveBalls(ref GameState state, const double delta)
             if (checkCollisionTowers(state, nextPos))
                 return reboundBall!false(ball);*/
 
-        static if (isMainPinball)
-            if (checkCollisionFlippers(state, nextPos))
-                return reboundBall!false(ball);
+        if (checkCollisionFlippers(state, nextPos))
+            return reboundBall!false(ball);
 
         if (checkCollisionObstacles!isMainPinball(state, nextPos))
         {
