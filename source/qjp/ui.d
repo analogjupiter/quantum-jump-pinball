@@ -109,7 +109,7 @@ void drawHandbook()
     DrawText("6. The flippers are", x, 440, 16, CTs.Colors.tipsNTricks);
     DrawText("    nowhere as useful as", x, 460, 16, CTs.Colors.tipsNTricks);
     DrawText("    they might look.", x, 480, 16, CTs.Colors.tipsNTricks);
-    DrawText("7. Going down to a lower", x, 500, 16, CTs.Colors.tipsNTricks);
+    DrawText("7. Jumping down to a lower", x, 500, 16, CTs.Colors.tipsNTricks);
     DrawText("    quantum level will", x, 520, 16, CTs.Colors.tipsNTricks);
     DrawText("    destroy the electrons", x, 540, 16, CTs.Colors.tipsNTricks);
     DrawText("    on higher ones.", x, 560, 16, CTs.Colors.tipsNTricks);
@@ -359,6 +359,7 @@ void drawObstacles(const ref GameState state)
 
 void drawGameOver(const ref GameState state)
 {
+    DrawText("Game Over", 104, 144, 64, CTs.Colors.gameOverShadow);
     DrawText("Game Over", 100, 140, 64, CTs.Colors.gameOver);
     DrawText("Press [ESC] to exit", 100, 210, 24, CTs.Colors.manual);
     DrawText("or re-open the app to retry (please).", 100, 240, 24, CTs.Colors.manual);

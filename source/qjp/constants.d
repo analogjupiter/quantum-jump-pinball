@@ -84,6 +84,7 @@ struct GameConstants
         message         = Color(0xFF, 0x00, 0x99, opaque),
         textShadow      = Color(0x00, 0x00, 0x00, opaque),
         gameOver        = Color(0xDD, 0x00, 0x00, opaque),
+        gameOverShadow  = Color(0xFF, 0xC3, 0x00, opaque),
         layer           = Color(0x99, 0x99, 0x99, opaque),
         layerCenter     = Color(0x00, 0x00, 0x00, 0x22),
         scanner         = Color(0x99, 0xBB, 0x99, opaque),
