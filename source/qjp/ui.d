@@ -86,7 +86,7 @@ void drawManual()
 void drawHandbook()
 {
     enum x = CTs.screenResolution.x - 200;
-    DrawText("Tips'n'tricks", x, 30, 16, CTs.Colors.tipsNTricks);
+    DrawText("Tips'n'Tricks", x, 30, 16, CTs.Colors.tipsNTricks);
     DrawText("1. Launch a pinball to", x, 60, 16, CTs.Colors.tipsNTricks);
     DrawText("    start the game.", x, 80, 16, CTs.Colors.tipsNTricks);
     DrawText("2. When you bump into", x, 100, 16, CTs.Colors.tipsNTricks);
