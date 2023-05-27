@@ -18,6 +18,13 @@ void drawFrame(ref GameState state, ref Camera2D camera)
     {
         ClearBackground(CTs.Colors.background);
 
+        if (state.quantumLevel == 0)
+        {
+            drawGameOver(state);
+            EndDrawing();
+            return;
+        }
+
         {
             Camera2D cameraSphere = camera;
             cameraSphere.rotation = state.quantumWobbleOffset;
@@ -81,10 +88,18 @@ void drawHUD(const ref GameState state)
     char[128] buffer;
 
     {
-        sformat(buffer, "Quantum Level: %d\0", cast(int) state.quantumLevel);
+        sformat(buffer, "Score: %d\0", state.score);
         DrawText(
             buffer.ptr,
-            10, 260, 16, CTs.Colors.manual
+            10, 260, 24, CTs.Colors.manual
+        );
+    }
+
+    {
+        sformat(buffer, "Quantum Level: %d\0", state.quantumLevel);
+        DrawText(
+            buffer.ptr,
+            10, 300, 16, CTs.Colors.manual
         );
     }
 
@@ -92,7 +107,7 @@ void drawHUD(const ref GameState state)
         sformat(buffer, "Wild Electrons: %d\0", cast(int) state.electrons.length);
         DrawText(
             buffer.ptr,
-            10, 280, 16, CTs.Colors.manual
+            10, 320, 16, CTs.Colors.manual
         );
     }
 
@@ -101,7 +116,7 @@ void drawHUD(const ref GameState state)
         sformat(buffer, "Spring: %d%%\0", cast(int) state.positionLauncherSpring);
         DrawText(
             buffer.ptr,
-            10, 300, 16, CTs.Colors.flipper
+            10, 340, 16, CTs.Colors.flipper
         );
     }
 
@@ -298,6 +313,25 @@ void drawObstacles(const ref GameState state)
             qLvl,
             state.positionWalls,
             (float(qLvl) / float(state.quantumLevel)),
+        );
+    }
+}
+
+void drawGameOver(const ref GameState state)
+{
+    DrawText("Game Over", 100, 140, 64, CTs.Colors.gameOver);
+    DrawText("Press [ESC] to exit", 100, 210, 24, CTs.Colors.manual);
+    DrawText("or re-open the app to retry (please).", 100, 240, 24, CTs.Colors.manual);
+
+    import std.format : sformat;
+
+    char[128] buffer;
+
+    {
+        sformat(buffer, "Score: %d\0", state.score);
+        DrawText(
+            buffer.ptr,
+            100, 70, 24, CTs.Colors.manual
         );
     }
 }

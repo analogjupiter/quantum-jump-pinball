@@ -42,6 +42,9 @@ void runPinball(ref GameState state)
 
 void tick(ref GameState state)
 {
+    if (state.quantumLevel == 0)
+        return;
+
     double now = GetTime();
     double delta = now - state.previousTickAt;
     scope (exit)
@@ -205,6 +208,7 @@ void moveBalls(ref GameState state, const double delta)
             checkCollisionElectrons(state, nextPos, delegate(size_t idx, const ref Electron electron) {
                 state.electrons.removeAt(idx);
                 ++state.quantumLevelSchedule;
+                state.score += 5;
             });
         }
 
