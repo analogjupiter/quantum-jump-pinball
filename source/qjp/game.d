@@ -94,6 +94,7 @@ void tick(ref GameState state)
     handlePinballLauncher(state, delta, inputs);
 
     moveBalls(state, delta);
+    handleElectronLifetimes(state, delta);
 
     if (inputs.triggerRelease)
         --state.quantumLevelSchedule;
@@ -287,4 +288,15 @@ Vector2 pullBackInGame(const Vector2 pos, const ref GameState state)
         Math.cos(angle) * max,
         Math.sin(angle) * max,
     );
+}
+
+void handleElectronLifetimes(ref GameState state, const float delta)
+{
+    enum f = 100 / CTs.electronLifetime;
+    foreach (idx, ref Electron electron; state.electrons)
+    {
+        electron.life -= delta * f;
+        if (electron.life < 0)
+            state.electrons.removeAt(idx);
+    }
 }

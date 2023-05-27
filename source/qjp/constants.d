@@ -38,6 +38,7 @@ struct GameConstants
         probabilityElectron = 30,
         maxElectrons = 6,
         electronCooldown = 1,
+        electronLifetime = 7,
     }
 
     enum

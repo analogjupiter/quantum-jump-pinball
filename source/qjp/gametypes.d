@@ -59,6 +59,7 @@ struct Electron
 {
     Ball ball;
     float cooldownLeft = CTs.electronCooldown;
+    float life = 100;
 
     bool active() inout
     {

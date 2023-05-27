@@ -117,6 +117,20 @@ struct List(T)
         return result;
     }
 
+    int opApply(scope int delegate(size_t, ref T) dg)
+    {
+        int result = 0;
+
+        foreach (idx, ref item; _data[0 .. _length])
+        {
+            result = dg(idx, item);
+            if (result)
+                break;
+        }
+
+        return result;
+    }
+
     void removeAt(size_t idx)
     {
         if (idx < _length)

@@ -207,15 +207,21 @@ void drawElectrons(ref GameState state)
         immutable radius = CTs.radiusElectron * state.quantumLevel;
         immutable radiusAura = CTs.radiusElectronAura * state.quantumLevel;
 
-        DrawCircleV(electron.ball.position, radius, CTs.Colors.electron);
+        Color c = CTs.Colors.electron;
+        Color c2 = CTs.Colors.electronAura;
+        Color c3 = CTs.Colors.electronAura2;
+        c.a = cast(ubyte)(c.a * electron.life / 100);
+        c2.a = cast(ubyte)(c2.a * electron.life / 100);
+        c3.a = cast(ubyte)(c3.a * electron.life / 100);
+        DrawCircleV(electron.ball.position, radius, c);
 
         // glowing aura
         DrawCircleGradient(
             cast(int) electron.ball.position.x,
             cast(int) electron.ball.position.y,
             radiusAura,
-            CTs.Colors.electronAura,
-            CTs.Colors.electronAura2
+            c2,
+            c3,
         );
     }
 }
