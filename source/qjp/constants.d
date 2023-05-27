@@ -39,6 +39,7 @@ struct GameConstants
         maxElectrons = 6,
         electronCooldown = 1,
         electronLifetime = 7,
+        messageLifetime = 1.5,
     }
 
     enum
@@ -67,6 +68,8 @@ struct GameConstants
         towerHeightTotal = CTs.towerHeight + towerRoofHeight,
 
         wallRadius = screenResolution.y / 20,
+
+        messageSize = screenResolution.y / 16,
     }
 
     enum ubyte opaque = 0xFF;
@@ -78,6 +81,8 @@ struct GameConstants
         background      = Color(0xFF, 0xFF, 0xFF, opaque),
         manual          = Color(0x00, 0x00, 0x00, opaque),
         tipsNTricks     = Color(0x44, 0x44, 0x99, opaque),
+        message         = Color(0xFF, 0x00, 0x99, opaque),
+        textShadow      = Color(0x00, 0x00, 0x00, opaque),
         gameOver        = Color(0xDD, 0x00, 0x00, opaque),
         layer           = Color(0x99, 0x99, 0x99, opaque),
         layerCenter     = Color(0x00, 0x00, 0x00, 0x22),

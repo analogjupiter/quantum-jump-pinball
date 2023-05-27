@@ -62,6 +62,7 @@ void drawFrame(ref GameState state, ref Camera2D camera)
         drawManual();
         drawHandbook();
         drawHUD(state);
+        drawMessage(state);
     }
     EndDrawing();
 }
@@ -376,4 +377,17 @@ void drawGameOver(const ref GameState state)
             100, 70, 24, CTs.Colors.manual
         );
     }
+}
+
+void drawMessage(const ref GameState state)
+{
+    if (state.messageLifetime <= 0)
+        return;
+
+    enum x = 100;
+    enum y = cast(int)(CTs.screenResolution.y - (CTs.radiusQuantum / 2));
+    enum xShadow = x + 3;
+    enum yShadow = y + 3;
+    DrawText(state.message.ptr, xShadow, yShadow, CTs.messageSize, CTs.Colors.textShadow);
+    DrawText(state.message.ptr, x, y, CTs.messageSize, CTs.Colors.message);
 }

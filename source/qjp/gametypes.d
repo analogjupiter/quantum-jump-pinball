@@ -25,6 +25,9 @@ struct GameState
     float positionLauncherSpring = 0;
 
     float positionWalls = 0;
+
+    float messageLifetime = 0;
+    char[128] message;
 }
 
 struct Inputs
@@ -71,4 +74,11 @@ struct Electron
 float calcFieldRadius(const ref GameState state)
 {
     return state.quantumLevel * CTs.radiusQuantum;
+}
+
+void setMessage(ref GameState state, string message)
+{
+    state.message[0 .. message.length] = message;
+    state.message[message.length] = '\0';
+    state.messageLifetime = CTs.messageLifetime;
 }

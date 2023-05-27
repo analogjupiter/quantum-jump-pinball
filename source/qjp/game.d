@@ -97,7 +97,10 @@ void tick(ref GameState state)
     handleElectronLifetimes(state, delta);
 
     if (inputs.triggerRelease)
+    {
         --state.quantumLevelSchedule;
+        state.setMessage("- Quantum Jump");
+    }
 
     state.quantumLevel = state.quantumLevelSchedule;
 
@@ -112,6 +115,8 @@ void tick(ref GameState state)
 
     if (state.quantumLevel > state.scoreQuantumLevel)
         state.scoreQuantumLevel = state.quantumLevel;
+
+    handleMessageLifetime(state, delta);
 }
 
 Inputs queryInput()
@@ -223,6 +228,7 @@ void moveBalls(ref GameState state, const double delta)
                 state.electrons.removeAt(idx);
                 ++state.quantumLevelSchedule;
                 state.score += 5;
+                state.setMessage("+ Quantum Jump");
             });
         }
 
@@ -302,4 +308,12 @@ void handleElectronLifetimes(ref GameState state, const float delta)
         if (electron.life < 0)
             state.electrons.removeAt(idx);
     }
+}
+
+void handleMessageLifetime(ref GameState state, const float delta)
+{
+    if (state.messageLifetime <= 0)
+        return;
+
+    state.messageLifetime -= delta;
 }
