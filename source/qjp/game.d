@@ -93,11 +93,21 @@ void tick(ref GameState state)
 
     handlePinballLauncher(state, delta, inputs);
 
+    moveBalls(state, delta);
+
     if (inputs.triggerRelease)
         --state.quantumLevelSchedule;
 
-    moveBalls(state, delta);
     state.quantumLevel = state.quantumLevelSchedule;
+
+    // remove oob pinball
+    if (checkCollisionOuterBounds(state, state.pinball.ball.position))
+        state.pinball.active = false;
+
+    // remove oob electrons
+    foreach (idx, electron; state.electrons)
+        if (checkCollisionOuterBounds(state, electron.ball.position))
+            state.electrons.removeAt(idx);
 }
 
 Inputs queryInput()
