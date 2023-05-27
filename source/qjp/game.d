@@ -101,14 +101,14 @@ void tick(ref GameState state)
 
     state.quantumLevel = state.quantumLevelSchedule;
 
-    // remove oob pinball
+    // pull back in oob pinball
     if (checkCollisionOuterBounds(state, state.pinball.ball.position))
         state.pinball.ball.position = state.pinball.ball.position.pullBackInGame(state);
 
     // remove oob electrons
-    foreach (ref electron; state.electrons)
+    foreach (idx, ref electron; state.electrons)
         if (checkCollisionOuterBounds(state, electron.ball.position))
-        electron.ball.position = electron.ball.position.pullBackInGame(state);
+            state.electrons.removeAt(idx);
 }
 
 Inputs queryInput()
