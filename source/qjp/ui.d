@@ -67,10 +67,11 @@ void drawManual()
     DrawText("A ... Move clockwise", 10, 60, 16, CTs.Colors.manual);
     DrawText("D ... Move counter-clockwise", 10, 80, 16, CTs.Colors.manual);
     DrawText("S ... Launch pinball", 10, 100, 16, CTs.Colors.manual);
-    DrawText("J ... Left flipper", 10, 140, 16, CTs.Colors.manual);
-    DrawText("L ... Right flipper", 10, 160, 16, CTs.Colors.manual);
-    DrawText("<- ... Left flipper", 10, 180, 16, CTs.Colors.manual);
-    DrawText("-> ... Right flipper", 10, 200, 16, CTs.Colors.manual);
+    DrawText("Q ... Release quantum energy", 10, 120, 16, CTs.Colors.manual);
+    DrawText("J ... Left flipper", 10, 160, 16, CTs.Colors.manual);
+    DrawText("L ... Right flipper", 10, 180, 16, CTs.Colors.manual);
+    DrawText("<- ... Left flipper", 10, 200, 16, CTs.Colors.manual);
+    DrawText("-> ... Right flipper", 10, 220, 16, CTs.Colors.manual);
 }
 
 void drawHUD(const ref GameState state)

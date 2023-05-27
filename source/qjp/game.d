@@ -90,6 +90,9 @@ void tick(ref GameState state)
 
     handlePinballLauncher(state, delta, inputs);
 
+    if (inputs.triggerRelease)
+        --state.quantumLevelSchedule;
+
     moveBalls(state, delta);
     state.quantumLevel = state.quantumLevelSchedule;
 }
@@ -111,6 +114,9 @@ Inputs queryInput()
 
     if (IsKeyDown(KeyboardKey.KEY_S))
         r.triggerLauncher = true;
+
+    if (IsKeyPressed(KeyboardKey.KEY_Q))
+        r.triggerRelease = true;
 
     return r;
 }

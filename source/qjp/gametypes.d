@@ -38,6 +38,7 @@ struct Inputs
     bool triggerLeft = false;
     bool triggerRight = false;
     bool triggerLauncher = false;
+    bool triggerRelease = false;
 }
 
 struct Ball
