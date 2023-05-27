@@ -140,7 +140,7 @@ bool checkCollisionObstacles(bool precise)(const ref GameState state, const Vect
     }
 
     static if (precise)
-        immutable radiusBall = CTs.radiusElectron * state.quantumLevel;
+        immutable radiusBall = CTs.radiusElectron * (state.quantumLevel / 2);
     else
         immutable radiusBall = CTs.radiusElectron;
 
@@ -166,7 +166,9 @@ bool checkCollisionObstacles(bool precise)(const ref GameState state, const Vect
 
 void checkCollisionElectrons(ref GameState state, const Vector2 pos, void delegate(size_t, const ref Electron) onCollision)
 {
-    immutable float maxDistance = (CTs.radiusPinballAura * state.quantumLevel);
+    immutable float maxDistance = (
+        (CTs.radiusPinballAura + CTs.radiusElectron) * state.quantumLevel
+    );
     foreach (idx, const ref Electron electron; state.electrons)
         if ((electron.active) && (distance(electron.ball.position, pos) < maxDistance))
             onCollision(idx, electron);
