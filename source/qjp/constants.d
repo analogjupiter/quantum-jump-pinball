@@ -39,7 +39,7 @@ struct GameConstants
         maxElectrons = 6,
         electronCooldown = 1,
         electronLifetime = 7,
-        messageLifetime = 1.5,
+        messageLifetime = 1.0f,
     }
 
     enum

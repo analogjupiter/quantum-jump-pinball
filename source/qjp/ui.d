@@ -359,17 +359,17 @@ void drawObstacles(const ref GameState state)
 
 void drawGameOver(const ref GameState state)
 {
-    DrawText("Game Over", 104, 144, 64, CTs.Colors.gameOverShadow);
-    DrawText("Game Over", 100, 140, 64, CTs.Colors.gameOver);
-    DrawText("Press [ESC] to exit", 100, 210, 24, CTs.Colors.manual);
-    DrawText("or re-open the app to retry (please).", 100, 240, 24, CTs.Colors.manual);
+    DrawText("Game Over", 104, 204, 64, CTs.Colors.gameOverShadow);
+    DrawText("Game Over", 100, 200, 64, CTs.Colors.gameOver);
+    DrawText("Press [ESC] to exit", 100, 280, 24, CTs.Colors.manual);
+    DrawText("or re-open the app to retry (please).", 100, 310, 24, CTs.Colors.manual);
 
     import std.format : sformat;
 
     char[128] buffer;
 
     {
-        sformat(buffer, "Score: %d (highest quantum level: %d)\0",
+        sformat(buffer, "Score: %d\nHighest quantum level: %d\0",
             state.score,
             state.scoreQuantumLevel
         );
