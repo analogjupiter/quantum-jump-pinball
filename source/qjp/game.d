@@ -102,12 +102,12 @@ void tick(ref GameState state)
 
     // remove oob pinball
     if (checkCollisionOuterBounds(state, state.pinball.ball.position))
-        state.pinball.active = false;
+        state.pinball.ball.position = state.pinball.ball.position.pullBackInGame(state);
 
     // remove oob electrons
-    foreach (idx, electron; state.electrons)
+    foreach (ref electron; state.electrons)
         if (checkCollisionOuterBounds(state, electron.ball.position))
-            state.electrons.removeAt(idx);
+        electron.ball.position = electron.ball.position.pullBackInGame(state);
 }
 
 Inputs queryInput()
@@ -276,4 +276,15 @@ void spawnElectron(ref GameState state)
             state.pinball.ball.position,
             state.pinball.ball.movement * -1,
     ));
+}
+
+Vector2 pullBackInGame(const Vector2 pos, const ref GameState state)
+{
+    immutable float max = CTs.radiusQuantum * state.quantumLevel - 1;
+    immutable float angle = Math.atan2(pos.y, pos.x);
+
+    return Vector2(
+        Math.cos(angle) * max,
+        Math.sin(angle) * max,
+    );
 }
