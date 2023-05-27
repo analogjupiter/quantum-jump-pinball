@@ -60,6 +60,7 @@ void drawFrame(ref GameState state, ref Camera2D camera)
         }
 
         drawManual();
+        drawHandbook();
         drawHUD(state);
     }
     EndDrawing();
@@ -79,6 +80,31 @@ void drawManual()
     DrawText("L ... Right flipper", 10, 180, 16, CTs.Colors.manual);
     DrawText("<- ... Left flipper", 10, 200, 16, CTs.Colors.manual);
     DrawText("-> ... Right flipper", 10, 220, 16, CTs.Colors.manual);
+}
+
+void drawHandbook()
+{
+    enum x = CTs.screenResolution.x - 200;
+    DrawText("Tips'n'tricks", x, 30, 16, CTs.Colors.tipsNTricks);
+    DrawText("1. Launch a pinball to", x, 60, 16, CTs.Colors.tipsNTricks);
+    DrawText("    start the game.", x, 80, 16, CTs.Colors.tipsNTricks);
+    DrawText("2. Electrons might spawn", x, 100, 16, CTs.Colors.tipsNTricks);
+    DrawText("    when you bump into", x, 120, 16, CTs.Colors.tipsNTricks);
+    DrawText("    obstacles.", x, 140, 16, CTs.Colors.tipsNTricks);
+    DrawText("3. Collect electrons to", x, 160, 16, CTs.Colors.tipsNTricks);
+    DrawText("    make a quantum jump", x, 180, 16, CTs.Colors.tipsNTricks);
+    DrawText("    and score points.", x, 200, 16, CTs.Colors.tipsNTricks);
+    DrawText("4. Release energy to jump", x, 220, 16, CTs.Colors.tipsNTricks);
+    DrawText("    back to a lower", x, 240, 16, CTs.Colors.tipsNTricks);
+    DrawText("    quantum.", x, 260, 16, CTs.Colors.tipsNTricks);
+    DrawText("    This makes it easier.", x, 280, 16, CTs.Colors.tipsNTricks);
+    DrawText("    to navigate through.", x, 300, 16, CTs.Colors.tipsNTricks);
+    DrawText("    the sphere.", x, 320, 16, CTs.Colors.tipsNTricks);
+    DrawText("5. Make sure not to", x, 340, 16, CTs.Colors.tipsNTricks);
+    DrawText("    release all of your", x, 360, 16, CTs.Colors.tipsNTricks);
+    DrawText("    quantum energy.", x, 380, 16, CTs.Colors.tipsNTricks);
+    DrawText("    You lose by hitting", x, 400, 16, CTs.Colors.tipsNTricks);
+    DrawText("    zero quantum.", x, 420, 16, CTs.Colors.tipsNTricks);
 }
 
 void drawHUD(const ref GameState state)

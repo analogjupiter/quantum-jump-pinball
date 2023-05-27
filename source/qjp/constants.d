@@ -15,7 +15,8 @@ struct GameConstants
         configFlags = ConfigFlags.FLAG_MSAA_4X_HINT,
 
         //screenResolution = Vector2i(1440, 1080),
-        screenResolution = Vector2i(1024, 720),
+        //screenResolution = Vector2i(1024, 720),
+        screenResolution = Vector2i(1024, 640), // fits Doigt’s screen
         cameraOffset = screenResolution / 2,
         center = Vector2i(0, 0),
 
@@ -75,6 +76,7 @@ struct GameConstants
         // dfmt off
         background      = Color(0xFF, 0xFF, 0xFF, opaque),
         manual          = Color(0x00, 0x00, 0x00, opaque),
+        tipsNTricks     = Color(0x44, 0x44, 0x99, opaque),
         gameOver        = Color(0xDD, 0x00, 0x00, opaque),
         layer           = Color(0x99, 0x99, 0x99, opaque),
         layerCenter     = Color(0x00, 0x00, 0x00, 0x22),
