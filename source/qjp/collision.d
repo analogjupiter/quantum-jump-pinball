@@ -139,8 +139,9 @@ bool checkCollisionObstacles(bool precise)(const ref GameState state, const Vect
         }
     }
 
+    enum preciseQuirk = CTs.radiusElectron / 1.2;
     static if (precise)
-        immutable radiusBall = CTs.radiusElectron * (state.quantumLevel / 2);
+        immutable radiusBall = preciseQuirk * state.quantumLevel;
     else
         immutable radiusBall = CTs.radiusElectron;
 
