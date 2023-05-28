@@ -99,7 +99,7 @@ void tick(ref GameState state)
     if (inputs.triggerRelease)
     {
         --state.quantumLevelSchedule;
-        state.setMessage("- Quantum Jump");
+        state.setMessage("Manual Quantum Jump");
     }
 
     state.quantumLevel = state.quantumLevelSchedule;
@@ -182,6 +182,8 @@ void moveBalls(ref GameState state, const double delta)
 {
     static void moveBall(bool isMainPinball)(ref Ball ball, ref GameState state, const double delta)
     {
+        import qjp.obstacles;
+
         float distance = ball.velocity * state.quantumLevel * delta;
         Vector2 nextPos = ball.position + (ball.movement * distance);
 
@@ -214,10 +216,25 @@ void moveBalls(ref GameState state, const double delta)
         if (checkCollisionFlippers(state, nextPos))
             return reboundBall!false(ball);
 
-        if (checkCollisionObstacles!isMainPinball(state, nextPos))
+        Obstacle.Type obstacleType;
+        if (checkCollisionObstacles!isMainPinball(state, nextPos, obstacleType))
         {
             static if (isMainPinball)
+            {
                 maybeSpawnElectron(state);
+
+                final switch (obstacleType) with (Obstacle.Type)
+                {
+                case defect:
+                    assert(false, "defect obstacle");
+                case wall:
+                    break;
+                case trap:
+                    state.score -= 25;
+                    state.setMessage("Trap (-25)");
+                    break;
+                }
+            }
             return reboundBall!true(ball);
         }
 
@@ -227,7 +244,7 @@ void moveBalls(ref GameState state, const double delta)
                 state.electrons.removeAt(idx);
                 ++state.quantumLevelSchedule;
                 state.score += 5;
-                state.setMessage("+ Quantum Jump");
+                state.setMessage("Quantum Jump (+5)");
             });
         }
 

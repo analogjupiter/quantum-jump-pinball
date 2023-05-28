@@ -129,12 +129,19 @@ bool checkCollisionFlippers(const ref GameState state, const Vector2 pos)
         || checkFlipper!false(state.positionFlipperR, posTranslated);
 }
 
-bool checkCollisionObstacles(bool precise)(const ref GameState state, const Vector2 pos)
+bool checkCollisionObstacles(bool precise)(
+    const ref GameState state,
+    const Vector2 pos,
+    out Obstacle.Type obstacleType
+)
 {
     static class CollisionException : Exception
     {
-        public this()
+        public Obstacle.Type obstacleType;
+
+        public this(Obstacle.Type obstacleType)
         {
+            this.obstacleType = obstacleType;
             super(null);
         }
     }
@@ -153,14 +160,18 @@ bool checkCollisionObstacles(bool precise)(const ref GameState state, const Vect
                 case defect:
                     assert(false, "Defect obstacle");
                 case wall:
+                case trap:
                     immutable distToWall = distance(obst.position, pos);
                     if ((distToWall < CTs.wallRadius) || (distToWall < radiusBall))
-                        throw new CollisionException();
+                        throw new CollisionException(obst.type);
                     break;
                 }
             });
-        catch (CollisionException)
+        catch (CollisionException ce)
+        {
+            obstacleType = ce.obstacleType;
             return true;
+        }
 
     return false;
 }

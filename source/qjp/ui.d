@@ -63,6 +63,7 @@ void drawFrame(ref GameState state, ref Camera2D camera)
         drawHandbook();
         drawHUD(state);
         drawMessage(state);
+        drawHint(state);
     }
     EndDrawing();
 }
@@ -107,12 +108,15 @@ void drawHandbook()
     DrawText("    You lose by hitting", x, 400, 16, CTs.Colors.tipsNTricks);
     DrawText("    zero quantum.", x, 420, 16, CTs.Colors.tipsNTricks);
     DrawText("6. The flippers are", x, 440, 16, CTs.Colors.tipsNTricks);
-    DrawText("    nowhere as useful as", x, 460, 16, CTs.Colors.tipsNTricks);
-    DrawText("    they might look.", x, 480, 16, CTs.Colors.tipsNTricks);
-    DrawText("7. Jumping down to a lower", x, 500, 16, CTs.Colors.tipsNTricks);
-    DrawText("    quantum level will", x, 520, 16, CTs.Colors.tipsNTricks);
-    DrawText("    destroy the electrons", x, 540, 16, CTs.Colors.tipsNTricks);
-    DrawText("    on higher ones.", x, 560, 16, CTs.Colors.tipsNTricks);
+    DrawText("    nowhere near as", x, 460, 16, CTs.Colors.tipsNTricks);
+    DrawText("    useful as they might", x, 480, 16, CTs.Colors.tipsNTricks);
+    DrawText("    look.", x, 500, 16, CTs.Colors.tipsNTricks);
+    DrawText("7. Jumping down to a lower", x, 520, 16, CTs.Colors.tipsNTricks);
+    DrawText("    quantum level will", x, 540, 16, CTs.Colors.tipsNTricks);
+    DrawText("    destroy the electrons", x, 560, 16, CTs.Colors.tipsNTricks);
+    DrawText("    on higher ones.", x, 580, 16, CTs.Colors.tipsNTricks);
+    DrawText("8.  Have fun (...and watch", x, 600, 16, CTs.Colors.tipsNTricks);
+    DrawText("    out for -red- traps!)", x, 620, 16, CTs.Colors.tipsNTricks);
 }
 
 void drawHUD(const ref GameState state)
@@ -342,6 +346,15 @@ void drawObstacles(const ref GameState state)
                     radiusWall,
                     CTs.Colors.obstacleBorder
                 );
+                break;
+
+            case trap:
+                DrawCircleV(
+                    Vector2(obst.position.x, obst.position.y),
+                    radiusWall,
+                    CTs.Colors.obstacleTrap
+                );
+                break;
             }
         });
     }
@@ -391,4 +404,16 @@ void drawMessage(const ref GameState state)
     enum yShadow = y + 3;
     DrawText(state.message.ptr, xShadow, yShadow, CTs.messageSize, CTs.Colors.textShadow);
     DrawText(state.message.ptr, x, y, CTs.messageSize, CTs.Colors.message);
+}
+
+void drawHint(const ref GameState state)
+{
+    if (state.pinball.active)
+        return;
+
+    static immutable hint = "Hold & release [S] to launch a pinball...";
+
+    enum y = cast(int)((CTs.screenResolution.y - CTs.messageSize) / 2 + 70);
+    DrawText(hint.ptr, 50 + 2, y + 2, CTs.messageSize, CTs.Colors.textShadow);
+    DrawText(hint.ptr, 50, y, CTs.messageSize, CTs.Colors.hint);
 }

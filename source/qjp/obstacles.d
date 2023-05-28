@@ -10,6 +10,7 @@ struct Obstacle
     {
         defect,
         wall,
+        trap,
     }
 
     Type type;
@@ -18,11 +19,15 @@ struct Obstacle
 
 void getObstacles(const int quantumLevel, const void delegate(Obstacle) callback)
 {
+    enum LN5 = Math.log2(5);
     immutable nObstacles =
         cast(int)(
-            (quantumLevel * 2.4)
-                + (quantumLevel % 3)
+            (quantumLevel % 3)
                 + Math.cos(float(quantumLevel))
+                + (
+                    (Math.log2(quantumLevel) / LN5) * 5
+                )
+                + 1
         );
     immutable indivShift = (CTs.radiusQuantum * 0.9) / nObstacles;
     immutable minShift =
@@ -42,11 +47,13 @@ void getObstacles(const int quantumLevel, const void delegate(Obstacle) callback
         }
         else
         {
-            // TODO
-            type = Obstacle.Type.wall;
+            if ((quantumLevel % 3 == 2) && (quantumLevel * n) % 19 == 18)
+                type = Obstacle.Type.trap;
+            else
+                type = Obstacle.Type.wall;
         }
 
-        angle += 300 * n / nObst3;
+        angle += 300 * n / nObst3 + (quantumLevel * 2);
 
         immutable float shift = minShift + n * indivShift;
 

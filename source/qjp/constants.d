@@ -16,7 +16,7 @@ struct GameConstants
 
         //screenResolution = Vector2i(1440, 1080),
         //screenResolution = Vector2i(1024, 720),
-        screenResolution = Vector2i(1024, 640), // fits Doigt’s screen
+        screenResolution = Vector2i(1080, 680), // fits Doigt’s screen
         cameraOffset = screenResolution / 2,
         center = Vector2i(0, 0),
 
@@ -81,6 +81,7 @@ struct GameConstants
         background      = Color(0xFF, 0xFF, 0xFF, opaque),
         manual          = Color(0x00, 0x00, 0x00, opaque),
         tipsNTricks     = Color(0x44, 0x44, 0x99, opaque),
+        hint            = Color(0x00, 0xDD, 0x00, opaque),
         message         = Color(0xFF, 0x00, 0x99, opaque),
         textShadow      = Color(0x00, 0x00, 0x00, opaque),
         gameOver        = Color(0xDD, 0x00, 0x00, opaque),
@@ -103,6 +104,7 @@ struct GameConstants
 
         obstacleBorder  = Color(0x11, 0x11, 0x11, opaque),
         obstacleWall    = Color(0xAA, 0x77, 0x77, opaque),
+        obstacleTrap    = Color(0xCC, 0x33, 0x44, opaque),
         // dfmt on
     }
 }
