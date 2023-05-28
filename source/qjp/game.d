@@ -42,7 +42,7 @@ void runPinball(ref GameState state)
 
 void tick(ref GameState state)
 {
-    if (state.quantumLevel == 0)
+    if (state.quantumLevel <= 0)
         return;
 
     double now = GetTime();
@@ -231,6 +231,8 @@ void moveBalls(ref GameState state, const double delta)
                     break;
                 case trap:
                     state.score -= 25;
+                    state.quantumLevelSchedule -= (state.quantumLevel < 10)
+                        ? 3 : rand(4, state.quantumLevel * 5 / 4);
                     state.setMessage("Trap (-25)");
                     break;
                 }

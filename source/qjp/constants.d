@@ -35,7 +35,7 @@ struct GameConstants
         reboundAngleMin = 40.toRadiant(),
         reboundAngleMax = 50.toRadiant(),
         wallRotationVelocity = 45.0f,
-        probabilityElectron = 30,
+        probabilityElectron = 70,
         maxElectrons = 6,
         electronCooldown = 1,
         electronLifetime = 7,

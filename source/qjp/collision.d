@@ -129,7 +129,7 @@ bool checkCollisionFlippers(const ref GameState state, const Vector2 pos)
         || checkFlipper!false(state.positionFlipperR, posTranslated);
 }
 
-bool checkCollisionObstacles(bool precise)(
+bool checkCollisionObstacles(bool isPinball)(
     const ref GameState state,
     const Vector2 pos,
     out Obstacle.Type obstacleType
@@ -146,11 +146,10 @@ bool checkCollisionObstacles(bool precise)(
         }
     }
 
-    enum preciseQuirk = CTs.radiusElectron / 1.2;
-    static if (precise)
-        immutable radiusBall = preciseQuirk * state.quantumLevel;
-    else
-        immutable radiusBall = CTs.radiusElectron;
+    enum rBall = (isPinball) ? CTs.radiusPinball : CTs.radiusElectron;
+    enum LN = Math.log2(1.5);
+    immutable radiusBall = (state.quantumLevel > 14)
+        ? rBall * Math.log2(state.quantumLevel) / LN : rBall * state.quantumLevel;
 
     foreach (lvlMin1; 0 .. state.quantumLevel)
         try
@@ -162,7 +161,7 @@ bool checkCollisionObstacles(bool precise)(
                 case wall:
                 case trap:
                     immutable distToWall = distance(obst.position, pos);
-                    if ((distToWall < CTs.wallRadius) || (distToWall < radiusBall))
+                    if (distToWall < (radiusBall + CTs.wallRadius))
                         throw new CollisionException(obst.type);
                     break;
                 }

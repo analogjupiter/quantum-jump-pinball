@@ -18,7 +18,7 @@ void drawFrame(ref GameState state, ref Camera2D camera)
     {
         ClearBackground(CTs.Colors.background);
 
-        if (state.quantumLevel == 0)
+        if (state.quantumLevel <= 0)
         {
             drawGameOver(state);
             EndDrawing();

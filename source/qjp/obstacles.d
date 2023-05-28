@@ -19,15 +19,12 @@ struct Obstacle
 
 void getObstacles(const int quantumLevel, const void delegate(Obstacle) callback)
 {
-    enum LN5 = Math.log2(5);
     immutable nObstacles =
         cast(int)(
             (quantumLevel % 3)
-                + Math.cos(float(quantumLevel))
-                + (
-                    (Math.log2(quantumLevel) / LN5) * 5
-                )
-                + 1
+                + (quantumLevel % 14)
+                - (quantumLevel % 7)
+                + ((quantumLevel % 17) % 11)
         );
     immutable indivShift = (CTs.radiusQuantum * 0.9) / nObstacles;
     immutable minShift =
@@ -41,17 +38,14 @@ void getObstacles(const int quantumLevel, const void delegate(Obstacle) callback
     foreach (n; 0 .. nObstacles)
     {
         Obstacle.Type type;
-        if (quantumLevel <= 3)
+        if ((quantumLevel == 4) && (n == 2))
+            type = Obstacle.Type.trap;
+        else if ((quantumLevel % 7 == 6) && (n) % 11 == 9)
         {
-            type = Obstacle.Type.wall;
+            type = Obstacle.Type.trap;
         }
         else
-        {
-            if ((quantumLevel % 3 == 2) && (quantumLevel * n) % 19 == 18)
-                type = Obstacle.Type.trap;
-            else
-                type = Obstacle.Type.wall;
-        }
+            type = Obstacle.Type.wall;
 
         angle += 300 * n / nObst3 + (quantumLevel * 2);
 
