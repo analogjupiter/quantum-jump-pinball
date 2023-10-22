@@ -1,8 +1,6 @@
-import std.stdio;
-
 import qjp.game;
 
-void main()
+extern(C) void main()
 {
 	runPinball();
 }

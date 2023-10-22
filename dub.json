@@ -13,6 +13,8 @@
     "targetType": "executable",
 
     "sourceFiles": ["libraylib.a"],
+    "dflags-ldc": ["-Oz", "-release", "-boundscheck=off", "-inline", "--flto=full", "-betterC"],
+    "lflags-ldc": ["--strip-all", "--lto-O3", "--lto-whole-program-visibility"],
 
     "dependencies": {
         "raylib-d": "4.5.1"

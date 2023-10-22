@@ -4,7 +4,7 @@ import qjp.constants;
 import qjp.gametypes;
 import qjp.types;
 import raylib;
-import Math = std.math;
+import Math = qjp.math;
 import qjp.obstacles;
 
 struct Collision
@@ -106,7 +106,7 @@ bool checkCollisionFlippers(const ref GameState state, const Vector2 pos)
         enum mount1 = Vector2(wallX, mount1Y);
         enum mount2 = Vector2(wallX, mount2Y);
 
-        enum hyp2 = float(Math.pow(CTs.flipperLength, 2));
+        enum hyp2 = float(Math.phobosPow(CTs.flipperLength, 2));
         immutable tipOffY = CTs.flipperMax * tipPc / 100f;
         immutable tipOffY2 = Math.pow(tipOffY, 2);
         immutable tipOffX = Math.sqrt(hyp2 - tipOffY2);
@@ -147,40 +147,35 @@ bool checkCollisionObstacles(bool isPinball)(
     }
 
     enum rBall = (isPinball) ? CTs.radiusPinball : CTs.radiusElectron;
-    enum LN = Math.log2(1.5);
+    enum LN = Math.phobosLog2(1.5);
     immutable radiusBall = (state.quantumLevel > 14)
-        ? rBall * Math.log2(state.quantumLevel) / LN : rBall * state.quantumLevel;
+        ? rBall * Math.log2(double(state.quantumLevel)) / LN : rBall * state.quantumLevel;
 
+    hadCollision = false;
     foreach (lvlMin1; 0 .. state.quantumLevel)
-        try
             getObstacles(lvlMin1 + 1, delegate(Obstacle obst) {
-                final switch (obst.type) with (Obstacle.Type)
-                {
-                case defect:
-                    assert(false, "Defect obstacle");
-                case wall:
-                case trap:
-                    immutable distToWall = distance(obst.position, pos);
-                    if (distToWall < (radiusBall + CTs.wallRadius))
-                        throw new CollisionException(obst.type);
-                    break;
+                immutable distToWall = distance(obst.position, pos);
+                if (distToWall < (radiusBall + CTs.wallRadius)) {
+                    hadCollision = true;
+                    lastCollision = obst.type;
+                    return false;
                 }
+                return true;
             });
-        catch (CollisionException ce)
-        {
-            obstacleType = ce.obstacleType;
-            return true;
-        }
 
-    return false;
+    obstacleType = lastCollision;
+    return hadCollision;
 }
 
-void checkCollisionElectrons(ref GameState state, const Vector2 pos, void delegate(size_t, const ref Electron) onCollision)
+__gshared Obstacle.Type lastCollision;
+__gshared bool hadCollision;
+
+void checkCollisionElectrons(ref GameState state, const Vector2 pos, void delegate(size_t, const ref Electron, ref GameState state) onCollision)
 {
     immutable float maxDistance = (
         (CTs.radiusPinballAura + CTs.radiusElectron) * state.quantumLevel
     );
     foreach (idx, const ref Electron electron; state.electrons)
         if ((electron.active) && (distance(electron.ball.position, pos) < maxDistance))
-            onCollision(idx, electron);
+            onCollision(idx, electron, state);
 }

@@ -5,8 +5,7 @@ import qjp.gametypes;
 
 import raylib;
 
-import std.conv : to;
-import Math = std.math;
+import Math = qjp.math;
 import qjp.obstacles;
 
 ///
@@ -46,17 +45,18 @@ void drawFrame(ref GameState state, ref Camera2D camera)
             }
 
             {
-                BeginMode2D(cameraFlippers);
-                drawFlippers(state);
-                EndMode2D();
-            }
-
-            {
                 BeginMode2D(camera);
                 drawElectrons(state);
                 drawPinball(state);
                 EndMode2D();
             }
+
+            {
+                BeginMode2D(cameraFlippers);
+                drawFlippers(state);
+                EndMode2D();
+            }
+
         }
 
         drawManual();
@@ -80,8 +80,6 @@ void drawManual()
     DrawText("Q ... Release quantum energy", 10, 120, 16, CTs.Colors.manual);
     DrawText("J ... Left flipper", 10, 160, 16, CTs.Colors.manual);
     DrawText("L ... Right flipper", 10, 180, 16, CTs.Colors.manual);
-    DrawText("<- ... Left flipper", 10, 200, 16, CTs.Colors.manual);
-    DrawText("-> ... Right flipper", 10, 220, 16, CTs.Colors.manual);
 }
 
 void drawHandbook()
@@ -121,12 +119,12 @@ void drawHandbook()
 
 void drawHUD(const ref GameState state)
 {
-    import std.format : sformat;
+    import core.stdc.stdio : sprintf;
 
     char[128] buffer;
 
     {
-        sformat(buffer, "Score: %d\0", state.score);
+        sprintf(buffer.ptr, "Score: %ld\0", state.score);
         DrawText(
             buffer.ptr,
             10, 260, 24, CTs.Colors.manual
@@ -134,7 +132,7 @@ void drawHUD(const ref GameState state)
     }
 
     {
-        sformat(buffer, "Quantum Level: %d\0", state.quantumLevel);
+        sprintf(buffer.ptr, "Quantum Level: %d\0", state.quantumLevel);
         DrawText(
             buffer.ptr,
             10, 300, 16, CTs.Colors.manual
@@ -142,7 +140,7 @@ void drawHUD(const ref GameState state)
     }
 
     {
-        sformat(buffer, "Wild Electrons: %d\0", cast(int) state.electrons.length);
+        sprintf(buffer.ptr, "Wild Electrons: %d\0", cast(int) state.electrons.length);
         DrawText(
             buffer.ptr,
             10, 320, 16, CTs.Colors.manual
@@ -151,7 +149,7 @@ void drawHUD(const ref GameState state)
 
     if (state.positionLauncherSpring > 0)
     {
-        sformat(buffer, "Spring: %d%%\0", cast(int) state.positionLauncherSpring);
+        sprintf(buffer.ptr, "Spring: %d%%\0", cast(int) state.positionLauncherSpring);
         DrawText(
             buffer.ptr,
             10, 340, 16, CTs.Colors.flipper
@@ -160,7 +158,7 @@ void drawHUD(const ref GameState state)
 
     version (none)
     {
-        sformat(buffer, "Now: %.0fs\0", GetTime());
+        sprintf(buffer.ptr, "Now: %.0fs\0", GetTime());
         DrawText(
             buffer.ptr,
             10, 240, 16, CTs.Colors.flipper
@@ -296,7 +294,7 @@ void drawFlippers(const ref GameState state)
         enum mount1 = Vector2(wallX, mount1Y);
         enum mount2 = Vector2(wallX, mount2Y);
 
-        enum hyp2 = float(Math.pow(CTs.flipperLength, 2));
+        enum hyp2 = float(Math.phobosPow(CTs.flipperLength, 2));
         immutable tipOffY = CTs.flipperMax * tipPc / 100f;
         immutable tipOffY2 = Math.pow(tipOffY, 2);
         immutable tipOffX = Math.sqrt(hyp2 - tipOffY2);
@@ -356,6 +354,8 @@ void drawObstacles(const ref GameState state)
                 );
                 break;
             }
+
+            return true;
         });
     }
 
@@ -377,12 +377,12 @@ void drawGameOver(const ref GameState state)
     DrawText("Press [ESC] to exit", 100, 280, 24, CTs.Colors.manual);
     DrawText("or re-open the app to retry (please).", 100, 310, 24, CTs.Colors.manual);
 
-    import std.format : sformat;
+    import core.stdc.stdio : sprintf;
 
     char[128] buffer;
 
     {
-        sformat(buffer, "Score: %d\nHighest quantum level: %d\0",
+        sprintf(buffer.ptr, "Score: %ld\nHighest quantum level: %d\0",
             state.score,
             state.scoreQuantumLevel
         );

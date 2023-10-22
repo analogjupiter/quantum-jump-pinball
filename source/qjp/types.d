@@ -1,7 +1,7 @@
 module qjp.types;
 
 import raylib;
-import Math = std.math;
+import Math = qjp.math;
 
 public import raylib : Vector2;
 
@@ -65,15 +65,18 @@ struct Vector2i
 
 struct List(T)
 {
+    import core.stdc.stdlib : malloc, realloc;
+
     private
     {
-        T[] _data;
+        T* _data = null;
+        size_t _capacity = 0;
         size_t _length = 0;
     }
 
     size_t capacity() const @safe pure nothrow @nogc
     {
-        return _data.length;
+        return _capacity;
     }
 
     size_t length() const @safe pure nothrow @nogc
@@ -144,6 +147,7 @@ struct List(T)
         if (capacity > _length)
             return;
 
-        _data.length += (_data.length / 2) + 1;
+        _capacity += ((_capacity / 2) + 1);
+        _data = cast(T*) realloc(_data, T.sizeof * _capacity);
     }
 }

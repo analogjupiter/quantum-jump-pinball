@@ -2,7 +2,7 @@ module qjp.obstacles;
 
 import qjp.types;
 import qjp.constants;
-import Math = std.math;
+import Math = qjp.math;
 
 struct Obstacle
 {
@@ -17,7 +17,7 @@ struct Obstacle
     Vector2 position;
 }
 
-void getObstacles(const int quantumLevel, const void delegate(Obstacle) callback)
+void getObstacles(const int quantumLevel, scope const bool delegate(Obstacle) callback)
 {
     immutable nObstacles =
         cast(int)(
@@ -56,6 +56,7 @@ void getObstacles(const int quantumLevel, const void delegate(Obstacle) callback
             Math.sin(angle.toRadiant)
         ) * shift;
 
-        callback(Obstacle(type, pos));
+        if (!callback(Obstacle(type, pos)))
+            break;
     }
 }

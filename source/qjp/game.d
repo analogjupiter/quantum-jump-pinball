@@ -9,12 +9,10 @@ import qjp.ui;
 
 import raylib;
 
-import Math = std.math;
+import Math = qjp.math;
 
 public void runPinball()
 {
-    validateRaylibBinding();
-
     auto state = GameState();
     runPinball(state);
 }
@@ -129,9 +127,9 @@ Inputs queryInput()
         r.movement = (r.movement == Inputs.Direction.none)
             ? Inputs.Direction.right : Inputs.Direction.none;
 
-    if (IsKeyDown(KeyboardKey.KEY_J) || IsKeyDown(KeyboardKey.KEY_LEFT))
+    if (IsKeyDown(KeyboardKey.KEY_J))
         r.triggerLeft = true;
-    if (IsKeyDown(KeyboardKey.KEY_L) || IsKeyDown(KeyboardKey.KEY_RIGHT))
+    if (IsKeyDown(KeyboardKey.KEY_L))
         r.triggerRight = true;
 
     if (IsKeyDown(KeyboardKey.KEY_S))
@@ -195,8 +193,7 @@ void moveBalls(ref GameState state, const double delta)
             {
                 immutable angleRad = Math.atan2(ball.movement.y, ball.movement.x);
 
-                //immutable float turnRad = 45.toRadiant;
-                immutable float turnRad = rand(CTs.reboundAngleMin, CTs.reboundAngleMax);
+                immutable float turnRad = rand(CTs.reboundAngleMin, CTs.reboundAngleMax).toRadiant();
                 immutable angleRadTarget = angleRad + turnRad;
 
                 ball.movement = Vector2(
@@ -209,9 +206,9 @@ void moveBalls(ref GameState state, const double delta)
         if (checkCollisionOuterBounds(state, nextPos))
             return reboundBall!true(ball);
 
-        /*static if (isMainPinball)
+        static if (isMainPinball)
             if (checkCollisionTowers(state, nextPos))
-                return reboundBall!false(ball);*/
+                return reboundBall!false(ball);
 
         if (checkCollisionFlippers(state, nextPos))
             return reboundBall!false(ball);
@@ -242,7 +239,7 @@ void moveBalls(ref GameState state, const double delta)
 
         static if (isMainPinball)
         {
-            checkCollisionElectrons(state, nextPos, delegate(size_t idx, const ref Electron electron) {
+            checkCollisionElectrons(state, nextPos, delegate(size_t idx, const ref Electron electron, ref GameState state) {
                 state.electrons.removeAt(idx);
                 ++state.quantumLevelSchedule;
                 state.score += 5;
